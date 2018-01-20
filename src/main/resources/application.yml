@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: service-discover-eureka
+
+---
+spring:
+  #指定profile=peer1
+  profiles: peer1
+server:
+  port: 8761
+eureka:
+  instance:
+    #指定当profile=peer1时，主机名是peer1
+    hostname: peer1
+  client:
+    serviceUrl:
+      #将自己注册到peer2这个eureka上面去
+      defaultZone: http://peer2:8762/eureka/
+---
+spring:
+  #指定profile=peer2
+  profiles: peer2
+server:
+  port: 8762
+eureka:
+  instance:
+    #指定当profile=peer2时，主机名是peer2
+    hostname: peer2
+  client:
+    serviceUrl:
+      #将自己注册到peer1这个eureka上面去
+      defaultZone: http://peer1:8761/eureka/
+
+
+
+###################################################
+#
+# 启动profiles = peer1
+# java -jar demo-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer1
+#
+###################################################
+#
+# 启动profiles = peer2
+# java -jar demo-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer2
+#
+###################################################
+#
+# peer1注册中心地址 http://peer1:8761
+# peer2注册中心地址 http://peer2:8762
+#
+###################################################
+#
+#
+#
+###################################################
